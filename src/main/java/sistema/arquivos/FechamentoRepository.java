@@ -1,12 +1,14 @@
-package sistema.arquivos;
-
-import sistema.objetos.Fechamento;
+package main.java.sistema.arquivos;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+
+import main.java.sistema.objetos.Fechamento;
 
 /**
  * Carrega e salva fechamentos em ~/Documents/fechamentos_db.txt

@@ -1,14 +1,13 @@
-package sistema;
-
-import sistema.arquivos.FechamentoRepository;
-import sistema.objetos.Fechamento;
-import sistema.objetos.MaquinaCartao;
+package main.java.sistema;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
+
+import main.java.sistema.arquivos.FechamentoRepository;
+import main.java.sistema.objetos.Fechamento;
+import main.java.sistema.objetos.MaquinaCartao;
 
 /**
  * Main completo do sistema + resultado final do turno integrado.

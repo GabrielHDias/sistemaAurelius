@@ -1,4 +1,4 @@
-package sistema.objetos;
+package main.java.sistema.objetos;
 
 public class MaquinaCartao {
 
