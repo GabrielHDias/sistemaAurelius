@@ -28,7 +28,6 @@ public class Fechamento {
     private double trocoInicial;
 
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
-    private static final double TAXA_CARTAO = 0.03; // 3%
 
     public Fechamento() {}
 
@@ -115,6 +114,7 @@ public class Fechamento {
         return maquinas.stream().mapToDouble(MaquinaCartao::getPix).sum();
     }
 
+    // aliases
     public double getTotalCredito() { return totalCreditoMaquinas(); }
     public double getTotalDebito() { return totalDebitoMaquinas(); }
     public double getTotalPix() { return totalPixMaquinas(); }
@@ -138,9 +138,12 @@ public class Fechamento {
     public double getDiferencaPix() { return diferencaPix(); }
     public double getDiferencaDinheiro() { return diferencaDinheiro(); }
 
-    // NOVO MÉTODO: cálculo final de dinheiro (independente do turno)
-    public double resultadoDinheiroFinal() {
-        return entradaDinheiro - trocoInicial - relatorioDinheiro;
+    // 🔥 NOVO: resultado total do turno
+    public double getResultadoFinalTurno() {
+        return diferencaCredito()
+                + diferencaDebito()
+                + diferencaPix()
+                + diferencaDinheiro();
     }
 
     // persistência
@@ -195,7 +198,7 @@ public class Fechamento {
                     f.setRelatorioDebito(Double.parseDouble(ln.substring(6)));
                 } else if (ln.startsWith("Relatório pix:")) {
                     f.setRelatorioPix(Double.parseDouble(ln.substring(6)));
-                } else if (ln.startsWith("Dinheiro entrada:")) {
+                } else if (ln.startsWith("Dinheiro em caixa:")) {
                     f.setEntradaDinheiro(Double.parseDouble(ln.substring(12)));
                 } else if (ln.startsWith("Relatório dinheiro:")) {
                     f.setRelatorioDinheiro(Double.parseDouble(ln.substring(6)));
@@ -238,12 +241,12 @@ public class Fechamento {
                 relatorioPix, totalPixMaquinas(), diferencaPix()));
 
         sb.append("\n=== Dinheiro ===\n");
-        sb.append(String.format("Dinheiro em caixa: R$ %.2f | Relatório: R$ %.2f | Dif: R$ %.2f\n",
+        sb.append(String.format("Entrada contada: R$ %.2f | Relatório: R$ %.2f | Dif: R$ %.2f\n",
                 entradaDinheiro, relatorioDinheiro, diferencaDinheiro()));
         sb.append(String.format("Troco inicial: R$ %.2f\n", trocoInicial));
 
-        sb.append(String.format("Resultado final (dinheiro - troco - rel): R$ %.2f\n",
-                resultadoDinheiroFinal()));
+        sb.append("\n=== Resultado Final do Turno ===\n");
+        sb.append(String.format("TOTAL: R$ %.2f\n", getResultadoFinalTurno()));
 
         sb.append("====================\n");
         return sb.toString();
